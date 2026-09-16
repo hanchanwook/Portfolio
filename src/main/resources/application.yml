@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: portfolio-backend
+  config:
+    import: optional:file:./application-local.properties
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/portfolio?connectionTimeZone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${DB_USERNAME:portfolio_app}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+portfolio:
+  cors-origins: ${CORS_ORIGINS:http://localhost:3000,http://127.0.0.1:3000}
+  admin-key: ${ADMIN_API_KEY:}
