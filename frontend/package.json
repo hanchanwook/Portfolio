@@ -1,0 +1,20 @@
+{
+  "name": "chanuk-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 3000",
+    "check": "node --check src/data.js && node --check src/projects.js && node --check src/careers.js && node --check src/skills.js && node --check vite.config.js",
+    "build": "npm run check && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 3000"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "vite": "^8.2.2"
+  }
+}

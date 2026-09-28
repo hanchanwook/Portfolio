@@ -1,80 +1,54 @@
-# Portfolio backend
+﻿# 한찬욱 포트폴리오
 
-Java 21 타깃, Spring Boot 4.1.1, Spring Data JPA, MySQL 8.4, Maven Wrapper 기반입니다. 로컬에 설치된 JDK 26으로도 빌드할 수 있습니다.
-
-## 구조
-
-```text
-src/main/java/com/chanuk/portfolio/
-├── project/  (controller, service, repository, entity, dto)
-├── career/   (controller, service, repository, entity, dto)
-├── skill/    (controller, service, repository, entity, dto)
-└── common/   (config, exception)
-```
-
-Controller는 입력 검증과 HTTP 응답, Service는 트랜잭션과 업무 처리, Repository는 DB 접근을 담당합니다. Entity를 직접 응답하지 않고 Request/Response DTO를 사용합니다. 업데이트는 트랜잭션 내 JPA 변경 감지를 사용합니다.
-
-## MySQL 최초 설정
-
-MySQL에 관리자 계정으로 로그인한 뒤 아래 SQL을 실행합니다. 예시 비밀번호를 실제 비밀번호로 바꿔 사용하고 Git에 저장하지 마세요.
-
-```sql
-CREATE DATABASE IF NOT EXISTS portfolio CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'portfolio_app'@'localhost' IDENTIFIED BY '여기에_직접_설정할_비밀번호';
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, REFERENCES
-ON portfolio.* TO 'portfolio_app'@'localhost';
-```
-
-이미 계정이 있다면 기존 계정을 사용하세요. `application-local.properties.example`을 `application-local.properties`로 복사해 DB 계정과 비밀번호를 로컬에서 입력합니다. 또는 `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` 환경 변수를 사용합니다. 설정 파일은 backend 폴더에서 실행할 때 읽으며 Git 제외 대상입니다.
+React + JavaScript(JSX) + Vite로 만든 정적 포트폴리오입니다. Node.js는 개발·빌드 도구로만 사용하며, 사이트 운영에는 Java 서버나 MySQL이 필요하지 않습니다.
 
 ## 실행
 
-```powershell
-cd C:\workspace\Portfolio\backend
-$env:JAVA_HOME = 'C:\Users\hanch\.jdks\openjdk-26.0.2.1'
-.\mvnw.cmd spring-boot:run
+Node.js 설치 후 Git Bash에서 실행합니다.
+
+```bash
+cd /c/workspace/Portfolio/frontend
+npm install
+npm run dev
 ```
 
-IntelliJ에서는 `backend/pom.xml`을 Maven 프로젝트로 열고 SDK를 JDK 21 이상(현재 로컬 JDK 26)으로, 실행 작업 디렉터리를 `backend`로 설정한 뒤 `PortfolioBackendApplication`을 실행합니다.
+브라우저에서 터미널에 표시된 주소(기본 http://localhost:3000)를 엽니다. PowerShell 실행 정책 오류가 나면 `npm.cmd`를 사용하세요.
 
-서버 주소는 `http://localhost:8080`입니다. 최초 기동 때 Flyway가 테이블과 확인된 포트폴리오 기초 데이터를 생성합니다. 재시작할 때 같은 데이터를 다시 삽입하지 않습니다. JPA는 스키마를 검증만 하며 자동 삭제·재생성하지 않습니다.
+## 내용 수정
 
-## API
+| 파일 | 내용 |
+| --- | --- |
+| `frontend/src/data.js` | 자기소개, 수상·자격증, 역량, 해외 경험, 문제 해결 사례 |
+| `frontend/src/projects.js` | 모든 프로젝트(실무·외주·학원 팀·ERP)의 제목·설명·담당 기능·기술·링크 |
+| `frontend/src/careers.js` | 경력 |
+| `frontend/src/skills.js` | 기술 목록 |
+| `frontend/src/main.jsx` | 페이지 구성, 메뉴, 이메일 복사 |
+| `frontend/src/styles.css` | 디자인과 반응형 레이아웃 |
 
-리소스는 `projects`, `careers`, `skills`입니다. 목록은 `displayOrder`, `id` 순으로 정렬합니다.
+내용은 JavaScript 파일에서 수정합니다. 프로젝트의 `category`는 `COMPANY`, `FREELANCE`, `TEAM`이며 배열 순서대로 표시됩니다. `period`는 기간, `role`은 역할, `description`은 설명입니다. 기존 DB의 프로젝트 3개·경력 3개·기술 20개를 옮겼으며 ERP 카드와 이력서 내용도 유지했습니다.
 
-| 메서드 | 경로 | 결과 |
-|---|---|---|
-| GET | `/api/{리소스}` | 전체 목록, 200 |
-| GET | `/api/{리소스}/{id}` | 단건 조회, 200 / 404 |
-| POST | `/api/{리소스}` | 등록, 201 + Location |
-| PUT | `/api/{리소스}/{id}` | 전체 필드 수정, 200 / 404 |
-| DELETE | `/api/{리소스}/{id}` | 삭제, 204 / 404 |
+Java·Spring·MySQL 등의 기술명은 실제 경력과 프로젝트 경험을 설명하는 콘텐츠입니다.
 
-조회는 공개입니다. 쓰기는 32자 이상 무작위 `ADMIN_API_KEY` 환경 변수 또는 `portfolio.admin-key` 로컬 설정과 일치하는 `X-Admin-Key` 헤더가 있어야 합니다. 미설정 시 쓰기는 모두 차단됩니다. 키는 React 코드나 VITE 환경 변수에 넣지 마세요. 현재는 로컬 API 관리용 인증이며 사용자 로그인·관리자 UI는 구현 전입니다. 외부 운영 시 HTTPS를 사용해야 합니다.
+## 검증과 배포
 
-프로젝트 요청 예시:
+`frontend` 폴더에서 실행합니다.
 
-```json
-{
-  "title": "S-IN",
-  "category": "FREELANCE",
-  "description": "실제 프로젝트 소개",
-  "role": "직접 담당한 역할",
-  "period": "2026",
-  "pending": true,
-  "displayOrder": 1
-}
+```bash
+npm run check
+npm run build
+npm run preview
 ```
 
-프로젝트 category: `COMPANY`, `FREELANCE`, `TEAM`. 경력 요청: `company`, `role`, `period`, `description`, `current`, `displayOrder`. 기술 요청: `name`, `category`, `displayOrder`이며 category는 `BACKEND`, `FRONTEND`, `DATABASE`, `TOOLS`입니다. 검증 실패는 400과 필드별 `errors`, 없는 데이터는 404 ProblemDetail을 반환합니다.
+`check`는 데이터·설정 JavaScript 문법을 검사하고, `build`는 React JSX를 포함한 앱 전체를 빌드합니다. `preview`로 빌드 결과를 확인합니다.
 
-CORS는 기본적으로 `localhost:3000`, `127.0.0.1:3000`만 허용하며 `CORS_ORIGINS`로 변경할 수 있습니다. React의 프로젝트·경력·기술 목록은 조회 API와 연결되어 있습니다. 자기소개와 이력서 역량 설명 등은 프론트엔드 로컬 콘텐츠를 사용합니다. DB 변경 후 화면을 새로고침하면 조회 결과가 반영됩니다.
+배포 대상은 `frontend/dist/`입니다. GitHub Pages 등 정적 호스팅을 사용할 수 있고, 상대 경로 설정으로 저장소 하위 경로도 지원합니다. 콘텐츠 수정 후 다시 빌드·배포하세요. API 주소, DB 계정, 관리자 키 설정은 필요하지 않습니다.
 
-## 검증
+원본 이력서와 설치 파일은 배포 파일에 포함되지 않습니다. 실제 원격 배포는 별도로 진행합니다.
 
-```powershell
-.\mvnw.cmd verify
-```
+### GitHub Pages 배포
 
-테스트는 테스트 전용 H2의 MySQL 호환 모드에서 Flyway 마이그레이션, HTTP CRUD, 재조회에 따른 저장 확인, 인증, 입력 검증, CORS를 검사합니다. 로컬 MySQL 비밀번호를 사용하거나 실제 DB 데이터를 수정하지 않습니다. 이 검증이 실제 MySQL 연결 검증을 대신하지는 않습니다.
+1. GitHub 저장소의 `Settings → Pages → Build and deployment → Source`에서 `GitHub Actions`를 선택합니다.
+2. `.github/workflows/pages.yml`을 포함한 코드를 `master` 또는 `main` 브랜치에 푸시합니다.
+3. 저장소의 `Actions`에서 `Deploy portfolio to GitHub Pages` 실행 결과를 확인합니다. 성공하면 배포 작업에 사이트 주소가 표시됩니다.
+
+이후 해당 브랜치에 푸시할 때마다 의존성 설치와 빌드를 수행하고 `frontend/dist`를 배포합니다. `dist`를 직접 커밋할 필요는 없습니다.
