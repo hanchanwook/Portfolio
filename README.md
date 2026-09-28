@@ -18,7 +18,7 @@ npm run dev
 
 | 파일 | 내용 |
 | --- | --- |
-| `frontend/src/data.js` | 자기소개, 수상·자격증, 역량, 해외 경험, 문제 해결 사례 |
+| `frontend/src/data.js` | 자기소개, 수상·자격증, 역량, 해외 경험 |
 | `frontend/src/projects.js` | 모든 프로젝트(실무·외주·학원 팀·ERP)의 제목·설명·담당 기능·기술·링크 |
 | `frontend/src/careers.js` | 경력 |
 | `frontend/src/skills.js` | 기술 목록 |

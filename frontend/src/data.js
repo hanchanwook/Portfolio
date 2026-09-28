@@ -9,8 +9,6 @@ export const skillGroups = [
   { category: 'DATABASE', icon: '▤', title: 'Database', description: '데이터의 구조와 관계를 이해합니다.' },
   { category: 'TOOLS', icon: '↗', title: 'Infra & Tools', description: '개발부터 배포까지 경험을 넓힙니다.' },
 ];
-// 실제 사례만 추가합니다. 배열이 비어 있으면 준비 중 안내를 표시합니다.
-export const troubleshooting = [];
 export const awards = ['프로젝트 우수상', 'SW인재상', 'SW혁신상', '특모범상'];
 export const resumeStrengths = [
   { title: '현장에서 배운 협업', label: 'PL · PM EXPERIENCE', description: '자동화 장비 제작 회사의 해외 현장에서 PL·PM 역할을 맡아 자사 인원과 협력사를 관리했습니다. 프로그램 제어팀과 소통하며 장비 유지보수와 개조 작업을 함께 수행했습니다.' },
